@@ -93,7 +93,6 @@ jobs:
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          components: clippy
           targets: thumbv7em-none-eabihf
 
       - name: Query crate version

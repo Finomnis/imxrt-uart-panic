@@ -1,6 +1,9 @@
-#![doc = include_str!("../README.md")]
 #![no_std]
 #![deny(unsafe_code)]
+#![deny(missing_docs)]
+#![doc = include_str!("../README.md")]
+#![doc(issue_tracker_base_url = "https://github.com/Finomnis/imxrt-uart-panic/issues")]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[doc(hidden)]
 pub mod _deps {

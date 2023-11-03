@@ -38,3 +38,8 @@ imxrt-log = { version = "0.1.1", default-features = false, features = [
     "lpuart",
 ] }
 log = "0.4.20"
+
+# Allow docsrs options
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
