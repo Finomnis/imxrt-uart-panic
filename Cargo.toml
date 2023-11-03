@@ -1,0 +1,23 @@
+[package]
+name = "imxrt-uart-panic"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+imxrt-hal = { version = "0.5.3", default-features = false }
+imxrt-ral = "0.5.3"
+cortex-m = "0.7.7"
+nb = "1.1.0"
+embedded-hal = "0.2.7"
+
+[dev-dependencies]
+teensy4-bsp = { version = "0.4.4", features = ["rt"] }
+teensy4-panic = { version = "0.2.3", default-features = false }
+rtic = { version = "2.0.1", features = ["thumbv7-backend"] }
+imxrt-log = { version = "0.1.1", default-features = false, features = [
+    "log",
+    "lpuart",
+] }
+log = "0.4.20"
