@@ -29,6 +29,10 @@ fn main() -> ! {
     panic!("Foo!");
 }
 ```
+```none
+panicked at examples\minimal.rs:11:5:
+Foo!
+```
 
 
 Additionally, one can provide a custom panic action, such as `teensy4_panic::sos`,
