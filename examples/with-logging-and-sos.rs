@@ -49,7 +49,7 @@ mod app {
         // Logging
         let log_dma = dma[LOG_DMA_CHANNEL].take().unwrap();
         let mut log_uart = board::lpuart(lpuart6, pins.p1, pins.p0, 115200);
-        for &ch in "\r\n===== i.MX RT UART Panic example =====\r\n\r\n".as_bytes() {
+        for &ch in "\r\n===== i.MX RT UART Panic Example =====\r\n\r\n".as_bytes() {
             nb::block!(log_uart.write(ch)).unwrap();
         }
         nb::block!(log_uart.flush()).unwrap();
