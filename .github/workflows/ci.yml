@@ -21,6 +21,8 @@ jobs:
 
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv7em-none-eabihf
 
       - name: Build
         run: cargo build --all-features --all-targets --release
@@ -42,8 +44,8 @@ jobs:
       #- uses: Swatinem/rust-cache@v1
 
       - name: Check MSRV
-        #run: cargo msrv verify
-        run: cargo msrv
+        #run: cargo msrv verify --target thumbv7em-none-eabihf
+        run: cargo msrv --target thumbv7em-none-eabihf
 
   lints:
     name: Lints
@@ -56,6 +58,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
+          targets: thumbv7em-none-eabihf
 
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
@@ -72,6 +75,8 @@ jobs:
 
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv7em-none-eabihf
 
       - name: Run cargo doc
         env:
