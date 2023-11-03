@@ -1,9 +1,22 @@
 [package]
 name = "imxrt-uart-panic"
+authors = ["Finomnis <finomnis@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/Finomnis/imxrt-uart-panic"
+description = "Panic handler for i.MX RT that reports to UART."
+keywords = ["imxrt", "embedded", "panic"]
+categories = ["embedded", "no-std"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+exclude = ["/.gitignore", "/.github/", "/.vscode/"]
+
+[features]
+default = []
+
+# Do not use; internally required for Github CI
+github_ci = ["teensy4-bsp", "teensy4-panic"]
 
 [dependencies]
 imxrt-hal = { version = "0.5.3", default-features = false }
@@ -11,6 +24,10 @@ imxrt-ral = "0.5.3"
 cortex-m = "0.7.7"
 nb = "1.1.0"
 embedded-hal = "0.2.7"
+
+# Additional CI dependencies
+teensy4-bsp = { version = "0.4", optional = true }
+teensy4-panic = { version = "0.2", default-features = false, optional = true }
 
 [dev-dependencies]
 teensy4-bsp = { version = "0.4.4", features = ["rt"] }
