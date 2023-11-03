@@ -78,7 +78,7 @@ jobs:
       - name: Run cargo doc
         env:
           RUSTDOCFLAGS: "-Dwarnings"
-        run: cargo doc --no-deps --examples
+        run: cargo doc --no-deps --examples --all-features
 
   release:
     name: Publish version
