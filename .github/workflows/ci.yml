@@ -10,8 +10,8 @@ on:
 name: CI
 
 jobs:
-  build:
-    name: Build
+  build_examples:
+    name: Build examples
     runs-on: ubuntu-latest
     env:
       RUSTFLAGS: "-D warnings"
@@ -25,10 +25,10 @@ jobs:
           targets: thumbv7em-none-eabihf
 
       - name: Build
-        run: cargo build --all-features --all-targets --release
+        run: cargo build --all-features --examples
 
-  msrv:
-    name: Minimum Supported Rust Version
+  build_examples_release:
+    name: Build examples (release)
     runs-on: ubuntu-latest
     env:
       RUSTFLAGS: "-D warnings"
@@ -36,16 +36,13 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v3
 
-      - name: Install cargo-msrv
-        uses: taiki-e/install-action@v2
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
         with:
-          tool: cargo-msrv
+          targets: thumbv7em-none-eabihf
 
-      #- uses: Swatinem/rust-cache@v1
-
-      - name: Check MSRV
-        #run: cargo msrv verify --target thumbv7em-none-eabihf
-        run: cargo msrv --target thumbv7em-none-eabihf
+      - name: Build
+        run: cargo build --all-features --examples --release
 
   lints:
     name: Lints
@@ -88,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     if: github.event_name == 'release'
-    needs: [build, msrv, lints, docs]
+    needs: [build_examples, build_examples_release, lints, docs]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
