@@ -94,6 +94,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
+          targets: thumbv7em-none-eabihf
 
       - name: Query crate version
         run: echo "crate_version=$(cargo metadata --format-version=1 --no-deps | python -c "import sys,json; print('v' + json.load(sys.stdin)['packages'][0]['version'])")" >> $GITHUB_ENV
