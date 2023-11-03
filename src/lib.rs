@@ -1,3 +1,4 @@
+#![doc = include_str!("../README.md")]
 #![no_std]
 #![deny(unsafe_code)]
 
@@ -10,6 +11,16 @@ pub mod _deps {
     pub use nb;
 }
 
+/// Registers the UART panic handler.
+///
+/// # Arguments
+///
+/// - `uart`: A peripheral defined in [`imxrt_ral::lpuart`].
+/// - `tx_pin`: The UART tx pin. Usually defined in the bsp, such as [`teensy4_bsp::pins::common`].
+/// - `rx_pin`: The UART rx pin. Usually defined in the bsp, such as [`teensy4_bsp::pins::common`].
+/// - `baud`: The UART baud rate. Most common ones are `9600` and `115200`.
+/// - `idle_func`: Optional. Specifies what function to enter in the end. Default is [`cortex_m::asm::udf`], but this could
+///   for example be used to enter [`teensy4_panic::sos`].
 #[macro_export]
 macro_rules! register {
     ($uart: ident, $tx_pin: ident, $rx_pin: ident, $baud: expr, $idle_func: expr) => {
