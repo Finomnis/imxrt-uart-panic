@@ -2,8 +2,8 @@
 
 [![Crates.io](https://img.shields.io/crates/v/imxrt-uart-panic)](https://crates.io/crates/imxrt-uart-panic)
 [![Crates.io](https://img.shields.io/crates/d/imxrt-uart-panic)](https://crates.io/crates/imxrt-uart-panic)
-[![License](https://img.shields.io/crates/l/imxrt-uart-panic)](https://github.com/Finomnis/imxrt-uart-panic/blob/main/LICENSE-MIT)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Finomnis/imxrt-uart-panic/ci.yml?branch=main)](https://github.com/Finomnis/imxrt-uart-panic/actions/workflows/ci.yml?query=branch%3Amain)
+[![License](https://img.shields.io/crates/l/imxrt-uart-panic)](https://github.com/imxrt-rs/imxrt-uart-panic/blob/main/LICENSE-MIT)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/imxrt-rs/imxrt-uart-panic/ci.yml?branch=main)](https://github.com/imxrt-rs/imxrt-uart-panic/actions/workflows/ci.yml?query=branch%3Amain)
 [![docs.rs](https://img.shields.io/docsrs/imxrt-uart-panic)](https://docs.rs/imxrt-uart-panic)
 
 This crate provides a UART based panic handler for i.MX RT.

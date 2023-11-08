@@ -1,11 +1,11 @@
 [package]
 name = "imxrt-uart-panic"
 authors = ["Finomnis <finomnis@gmail.com>"]
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/Finomnis/imxrt-uart-panic"
+repository = "https://github.com/imxrt-rs/imxrt-uart-panic"
 description = "Panic handler for i.MX RT that reports to UART."
 keywords = ["imxrt", "embedded", "panic"]
 categories = ["embedded", "no-std"]
