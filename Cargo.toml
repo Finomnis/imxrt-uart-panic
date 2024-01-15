@@ -23,7 +23,7 @@ imxrt-hal = { version = "0.5.3", default-features = false }
 imxrt-ral = "0.5.3"
 cortex-m = "0.7.7"
 nb = "1.1.0"
-embedded-hal = "0.2.7"
+embedded-hal = "1.0.0"
 
 # Additional CI dependencies
 teensy4-bsp = { version = "0.4", optional = true }
