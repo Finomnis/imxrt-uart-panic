@@ -120,12 +120,70 @@ jobs:
         with:
           feature-group: all-features
 
+  min-versions:
+    name: Minimal Dependency Versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Install nightly toolchain
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@cargo-hack
+      - name: Install cargo-minimal-versions
+        uses: taiki-e/install-action@cargo-minimal-versions
+
+      - name: Check with minimal versions
+        run: cargo minimal-versions check --all-features --workspace --ignore-private
+
+      - name: Build examples with minimal versions
+        run: cargo minimal-versions build --all-features --examples
+
+  min-versions-msrv:
+    name: Minimal Dependency Versions (MSRV)
+    runs-on: ubuntu-latest
+    needs: [lints, docs]
+    env:
+      RUSTFLAGS: "-D warnings"
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Install nightly toolchain
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Install cargo-binstall
+        uses: taiki-e/install-action@cargo-binstall
+      - name: Install cargo-msrv
+        run: cargo binstall --version 0.16.0-beta.20 --no-confirm cargo-msrv
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@cargo-hack
+      - name: Install cargo-minimal-versions
+        uses: taiki-e/install-action@cargo-minimal-versions
+
+      - name: Determine MSRV
+        run: echo "MSRV=$(cargo msrv show --output-format=minimal)" >> $GITHUB_ENV
+
+      - name: Show MSRV
+        run: echo $MSRV
+
+      - name: Install MSRV Rust version
+        run: rustup toolchain install $MSRV
+
+      - name: Check with minimal versions
+        run: cargo +$MSRV minimal-versions check --all-features --workspace --ignore-private
+
+      - name: Build examples with minimal versions
+        run: cargo +$MSRV minimal-versions build --all-features --examples
+
   release:
     name: Publish version
     runs-on: ubuntu-latest
     environment: production
     if: github.event_name == 'release'
-    needs: [build_examples, build_examples_release, lints, docs, msrv, semver]
+    needs: [build_examples, build_examples_release, lints, docs, msrv, semver, min-versions, min-versions-msrv]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
