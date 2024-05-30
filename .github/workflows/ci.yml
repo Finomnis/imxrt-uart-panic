@@ -9,12 +9,13 @@ on:
 
 name: CI
 
+env:
+  RUSTFLAGS: "-D warnings"
+
 jobs:
   build_examples:
     name: Build examples
     runs-on: ubuntu-latest
-    env:
-      RUSTFLAGS: "-D warnings"
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
@@ -30,8 +31,6 @@ jobs:
   build_examples_release:
     name: Build examples (release)
     runs-on: ubuntu-latest
-    env:
-      RUSTFLAGS: "-D warnings"
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
@@ -61,7 +60,7 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Run cargo clippy
-        run: cargo clippy --all-features --examples -- -D warnings
+        run: cargo clippy --all-features --examples --libs --bin -- -D warnings
 
   docs:
     name: Documentation
@@ -80,12 +79,53 @@ jobs:
           RUSTDOCFLAGS: "-Dwarnings"
         run: cargo doc --no-deps --examples --all-features
 
+
+  msrv:
+    name: Minimum Supported Rust Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Install cargo-binstall
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-binstall
+
+      - name: Install cargo-msrv
+        run: cargo binstall --version 0.16.0-beta.20 --no-confirm cargo-msrv
+
+      #- uses: Swatinem/rust-cache@v1
+
+      - name: Check MSRV
+        run: cargo msrv --output-format json --all-features --target=thumbv7em-none-eabihf -- cargo check --examples
+        #run: cargo msrv --log-target=stdout --log-level debug --output-format json --all-features --target=thumbv7em-none-eabihf verify -- cargo check --examples
+        #run: cargo msrv --output-format json --all-features --target=thumbv7em-none-eabihf verify -- cargo check --examples
+
+  semver:
+    name: Semantic Versioning
+    runs-on: ubuntu-latest
+    env:
+      # No idea why this fixes the check.
+      RUSTFLAGS: "--cap-lints=warn"
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv7em-none-eabihf
+      - name: Check semver
+        uses: obi1kenobi/cargo-semver-checks-action@v2
+        with:
+          feature-group: all-features
+
   release:
     name: Publish version
     runs-on: ubuntu-latest
     environment: production
     if: github.event_name == 'release'
-    needs: [build_examples, build_examples_release, lints, docs]
+    needs: [build_examples, build_examples_release, lints, docs, msrv, semver]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
