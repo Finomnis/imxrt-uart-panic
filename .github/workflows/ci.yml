@@ -60,7 +60,7 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Run cargo clippy
-        run: cargo clippy --all-features --examples --libs --bin -- -D warnings
+        run: cargo clippy --all-features --examples --lib --bins -- -D warnings
 
   docs:
     name: Documentation
@@ -98,9 +98,9 @@ jobs:
       #- uses: Swatinem/rust-cache@v1
 
       - name: Check MSRV
-        run: cargo msrv --output-format json --all-features --target=thumbv7em-none-eabihf -- cargo check --examples
+        #run: cargo msrv --output-format json --all-features --target=thumbv7em-none-eabihf -- cargo check --examples
         #run: cargo msrv --log-target=stdout --log-level debug --output-format json --all-features --target=thumbv7em-none-eabihf verify -- cargo check --examples
-        #run: cargo msrv --output-format json --all-features --target=thumbv7em-none-eabihf verify -- cargo check --examples
+        run: cargo msrv --output-format json --all-features --target=thumbv7em-none-eabihf verify -- cargo check --examples
 
   semver:
     name: Semantic Versioning
