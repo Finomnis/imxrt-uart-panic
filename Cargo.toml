@@ -16,21 +16,16 @@ exclude = ["/.gitignore", "/.github/", "/.vscode/"]
 default = []
 
 # Do not use; internally required for Github CI
-github_ci = ["teensy4-bsp", "teensy4-panic"]
+_ci = ["imxrt-ral/imxrt1062"]
 
 [dependencies]
-imxrt-hal = { version = "0.5.3", default-features = false }
+imxrt-hal = { version = "0.5.5", default-features = false }
 imxrt-ral = "0.5.3"
 cortex-m = "0.7.7"
-nb = "1.1.0"
-embedded-hal = "0.2.7"
-
-# Additional CI dependencies
-teensy4-bsp = { version = "0.4", optional = true }
-teensy4-panic = { version = "0.2", default-features = false, optional = true }
+embedded-io = "0.6.1"
 
 [dev-dependencies]
-teensy4-bsp = { version = "0.4.4", features = ["rt"] }
+teensy4-bsp = { version = "0.5.0", features = ["rt"] }
 teensy4-panic = { version = "0.2.3", default-features = false }
 rtic = { version = "2.0.1", features = ["thumbv7-backend"] }
 imxrt-log = { version = "0.1.1", default-features = false, features = [
