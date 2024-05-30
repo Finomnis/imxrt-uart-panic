@@ -73,9 +73,9 @@ macro_rules! register {
                 fn write_str(&mut self, s: &str) -> ::core::fmt::Result {
                     for &b in s.as_bytes() {
                         if b == b'\n' {
-                            let _ = self.uart.write(b"\r");
+                            let _ = self.uart.write_all(b"\r");
                         }
-                        let _ = self.uart.write(core::slice::from_ref(&b));
+                        let _ = self.uart.write_all(core::slice::from_ref(&b));
                     }
                     Ok(())
                 }

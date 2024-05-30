@@ -27,7 +27,7 @@ embedded-io = "0.6.1"
 [dev-dependencies]
 teensy4-bsp = { version = "0.5.0", features = ["rt"] }
 teensy4-panic = { version = "0.2.3", default-features = false }
-rtic = { version = "2.0.1", features = ["thumbv7-backend"] }
+rtic = { version = "2.1.1", features = ["thumbv7-backend"] }
 imxrt-log = { version = "0.1.1", default-features = false, features = [
     "log",
     "lpuart",
