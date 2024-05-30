@@ -129,6 +129,8 @@ jobs:
 
       - name: Install nightly toolchain
         uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: thumbv7em-none-eabihf
 
       - name: Install cargo-hack
         uses: taiki-e/install-action@cargo-hack
@@ -153,6 +155,8 @@ jobs:
 
       - name: Install nightly toolchain
         uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: thumbv7em-none-eabihf
 
       - name: Install cargo-binstall
         uses: taiki-e/install-action@cargo-binstall
