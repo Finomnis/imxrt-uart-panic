@@ -8,7 +8,7 @@
 #[doc(hidden)]
 pub mod _deps {
     pub use cortex_m;
-    pub use embedded_hal;
+    pub use embedded_io;
     pub use imxrt_hal;
     pub use imxrt_ral;
 }
@@ -73,11 +73,10 @@ macro_rules! register {
                 fn write_str(&mut self, s: &str) -> ::core::fmt::Result {
                     for &b in s.as_bytes() {
                         if b == b'\n' {
-                            let _ = self.uart.write(b'\r');
+                            let _ = self.uart.write(b"\r");
                         }
-                        let _ = self.uart.write(b);
+                        let _ = self.uart.write(core::slice::from_ref(&b));
                     }
-                    self.uart.flush();
                     Ok(())
                 }
             }
@@ -88,7 +87,7 @@ macro_rules! register {
             ::core::writeln!(uart, "{}", info).ok();
             ::core::writeln!(uart).ok();
 
-            let _ = block!(uart.uart.flush());
+            let _ = uart.uart.flush();
 
             $idle_func();
         }
