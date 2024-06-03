@@ -26,11 +26,11 @@ nb = "1.1.0"
 embedded-hal = "0.2.7"
 
 # Additional CI dependencies
-teensy4-bsp = { version = "0.4", optional = true }
+teensy4-bsp = { version = "0.5", optional = true }
 teensy4-panic = { version = "0.2", default-features = false, optional = true }
 
 [dev-dependencies]
-teensy4-bsp = { version = "0.4.4", features = ["rt"] }
+teensy4-bsp = { version = "0.5.0", features = ["rt"] }
 teensy4-panic = { version = "0.2.3", default-features = false }
 rtic = { version = "2.0.1", features = ["thumbv7-backend"] }
 imxrt-log = { version = "0.1.1", default-features = false, features = [
