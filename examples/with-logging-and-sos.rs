@@ -16,11 +16,10 @@ mod app {
 
     use bsp::board;
     use bsp::hal;
-    use bsp::logging;
 
     use hal::gpt;
 
-    use embedded_hal::serial::Write;
+    use embedded_io::Write;
 
     const LOG_POLL_INTERVAL: u32 = board::PERCLK_FREQUENCY / 100;
     const LOG_DMA_CHANNEL: usize = 0;
@@ -28,7 +27,7 @@ mod app {
     #[local]
     struct Local {
         poll_log: hal::pit::Pit3,
-        log_poller: logging::Poller,
+        log_poller: imxrt_log::Poller,
         gpt1: hal::gpt::Gpt1,
     }
 
@@ -49,12 +48,14 @@ mod app {
         // Logging
         let log_dma = dma[LOG_DMA_CHANNEL].take().unwrap();
         let mut log_uart = board::lpuart(lpuart6, pins.p1, pins.p0, 115200);
-        for &ch in "\r\n===== i.MX RT UART Panic Example =====\r\n\r\n".as_bytes() {
-            nb::block!(log_uart.write(ch)).unwrap();
-        }
-        nb::block!(log_uart.flush()).unwrap();
+
+        log_uart
+            .write_all(b"\r\n===== i.MX RT UART Panic Example =====\r\n\r\n")
+            .unwrap();
+        log_uart.flush().unwrap();
+
         let log_poller =
-            logging::log::lpuart(log_uart, log_dma, logging::Interrupts::Enabled).unwrap();
+            imxrt_log::log::lpuart(log_uart, log_dma, imxrt_log::Interrupts::Enabled).unwrap();
         poll_log.set_interrupt_enable(true);
         poll_log.set_load_timer_value(LOG_POLL_INTERVAL);
         poll_log.enable();

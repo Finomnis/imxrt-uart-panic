@@ -8,10 +8,9 @@
 #[doc(hidden)]
 pub mod _deps {
     pub use cortex_m;
-    pub use embedded_hal;
+    pub use embedded_io;
     pub use imxrt_hal;
     pub use imxrt_ral;
-    pub use nb;
 }
 
 /// Registers the UART panic handler.
@@ -19,11 +18,11 @@ pub mod _deps {
 /// # Arguments
 ///
 /// - `uart`: A peripheral defined in [`imxrt_ral::lpuart`].
-/// - `tx_pin`: The UART tx pin. Usually defined in the bsp, such as [`teensy4_bsp::pins::common`].
-/// - `rx_pin`: The UART rx pin. Usually defined in the bsp, such as [`teensy4_bsp::pins::common`].
+/// - `tx_pin`: The UART tx pin. Usually defined in the bsp, such as [`teensy4_bsp::pins::common`](https://docs.rs/teensy4-pins/0.3.2/teensy4_pins/common).
+/// - `rx_pin`: The UART rx pin. Usually defined in the bsp, such as [`teensy4_bsp::pins::common`](https://docs.rs/teensy4-pins/0.3.2/teensy4_pins/common).
 /// - `baud`: The UART baud rate. Most common ones are `9600` and `115200`.
 /// - `idle_func`: Optional. Specifies what function to enter in the end. Default is [`cortex_m::asm::udf`], but this could
-///   for example be used to enter [`teensy4_panic::sos`].
+///   for example be used to enter [`teensy4_panic::sos`](https://docs.rs/teensy4-panic/0.2.3/teensy4_panic/fn.sos.html).
 #[macro_export]
 macro_rules! register {
     ($uart: ident, $tx_pin: ident, $rx_pin: ident, $baud: expr, $idle_func: expr) => {
@@ -31,10 +30,9 @@ macro_rules! register {
         fn panic(info: &::core::panic::PanicInfo) -> ! {
             use ::core::fmt::Write as _;
 
-            use $crate::_deps::embedded_hal::serial::Write as _;
+            use $crate::_deps::embedded_io::Write as _;
             use $crate::_deps::imxrt_hal as hal;
             use $crate::_deps::imxrt_ral as ral;
-            use $crate::_deps::nb::block;
 
             use hal::ccm;
             use hal::lpuart::{Baud, Direction, Lpuart, Pins, Watermark};
@@ -75,9 +73,9 @@ macro_rules! register {
                 fn write_str(&mut self, s: &str) -> ::core::fmt::Result {
                     for &b in s.as_bytes() {
                         if b == b'\n' {
-                            let _ = block!(self.uart.write(b'\r'));
+                            let _ = self.uart.write_all(b"\r");
                         }
-                        let _ = block!(self.uart.write(b));
+                        let _ = self.uart.write_all(core::slice::from_ref(&b));
                     }
                     Ok(())
                 }
@@ -89,7 +87,7 @@ macro_rules! register {
             ::core::writeln!(uart, "{}", info).ok();
             ::core::writeln!(uart).ok();
 
-            let _ = block!(uart.uart.flush());
+            let _ = uart.uart.flush();
 
             $idle_func();
         }
